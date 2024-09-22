@@ -136,6 +136,7 @@ mostrar_tabla_resultados(df_corregido)
 
 
 
+![mapa calor](https://github.com/user-attachments/assets/d78bb81c-1134-4920-9e15-3a0e5d840b4d)
 
 
 
@@ -215,8 +216,26 @@ for variable in variables:
         visualizar_distribucion(df, variable)
 
 
-  
+
 ```
+
+
+
+
+
+![MTC Years with curr Manager](https://github.com/user-attachments/assets/72203aff-7135-45ed-a152-32f3fd1b45b6)
+
+
+
+
+
+
+
+
+
+
+  
+
 
 
 
@@ -226,6 +245,127 @@ for variable in variables:
 a)  Machine learning (supervisado).
 
 A continuación ejemplos de lo anterior:
+
+
+
+
+```
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+import xgboost as xgb
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.impute import SimpleImputer  # Para manejar los NaN
+import warnings  # Para suprimir advertencias
+
+# Suprimir las advertencias de XGBoost
+warnings.filterwarnings(action='ignore', category=UserWarning, module='xgboost')
+
+# Cargar los datos (reemplaza 'datos' con tu DataFrame)
+df = datos
+
+# 1. Preprocesamiento de datos
+# Convertir variables categóricas a numéricas con Label Encoding
+label_encoder = LabelEncoder()
+categorical_columns = ['Attrition', 'BusinessTravel', 'Department', 'EducationField', 'Gender', 'JobRole', 'MaritalStatus', 'Over18']
+
+for column in categorical_columns:
+    df[column] = label_encoder.fit_transform(df[column])
+
+# Definir las variables independientes (X) y dependiente (y)
+X = df[['Age', 'BusinessTravel', 'Department', 'DistanceFromHome', 'Education', 'EducationField',
+        'EmployeeCount', 'EmployeeID', 'Gender', 'JobLevel', 'JobRole', 'MaritalStatus', 'MonthlyIncome',
+        'NumCompaniesWorked', 'Over18', 'PercentSalaryHike', 'StandardHours', 'StockOptionLevel',
+        'TotalWorkingYears', 'TrainingTimesLastYear', 'YearsAtCompany', 'YearsSinceLastPromotion', 'YearsWithCurrManager']]
+y = df['Attrition']
+
+# Manejar valores faltantes (NaN) usando SimpleImputer
+imputer = SimpleImputer(strategy='mean')
+X_imputed = imputer.fit_transform(X)
+
+# Dividir los datos en conjuntos de entrenamiento y prueba (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X_imputed, y, test_size=0.2, random_state=42, stratify=y)
+
+# 2. Entrenar y evaluar los modelos
+
+# Logistic Regression
+log_reg = LogisticRegression(max_iter=1000)
+log_reg.fit(X_train, y_train)
+y_pred_log_reg = log_reg.predict(X_test)
+acc_log_reg = accuracy_score(y_test, y_pred_log_reg)
+
+# XGBoost
+xgboost_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+xgboost_model.fit(X_train, y_train)
+y_pred_xgb = xgboost_model.predict(X_test)
+acc_xgb = accuracy_score(y_test, y_pred_xgb)
+
+# Random Forest
+random_forest = RandomForestClassifier(random_state=42)
+random_forest.fit(X_train, y_train)
+y_pred_rf = random_forest.predict(X_test)
+acc_rf = accuracy_score(y_test, y_pred_rf)
+
+# 3. Mostrar resultados en una tabla
+resultados = pd.DataFrame({
+    'Modelo': ['Logistic Regression', 'XGBoost', 'RandomForest'],
+    'Exactitud (Accuracy)': [acc_log_reg, acc_xgb, acc_rf]
+})
+
+print("\nResultados de los modelos:")
+print(resultados)
+
+# 4. Visualizar las matrices de confusión
+
+# Función para mostrar la matriz de confusión
+def mostrar_matriz_confusion(y_test, y_pred, model_name):
+    plt.figure(figsize=(12,8))
+    cm = confusion_matrix(y_test, y_pred)
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
+    plt.title(f'Matriz de Confusión - {model_name}')
+    plt.xlabel('Predicciones')
+    plt.ylabel('Valores Reales')
+    plt.show()
+
+# Matrices de confusión para cada modelo
+mostrar_matriz_confusion(y_test, y_pred_log_reg, "Logistic Regression")
+mostrar_matriz_confusion(y_test, y_pred_xgb, "XGBoost")
+mostrar_matriz_confusion(y_test, y_pred_rf, "RandomForest")
+
+# 5. Visualización del rendimiento de los modelos con etiquetas en las barras
+plt.figure(figsize=(16, 12))
+barplot = sns.barplot(x='Modelo', y='Exactitud (Accuracy)', data=resultados, hue='Modelo', palette='viridis', dodge=False)
+plt.legend([],[], frameon=False)  # Elimina la leyenda si no se necesita
+plt.title('Comparación de Exactitud entre Modelos')
+plt.ylabel('Exactitud')
+
+# Agregar etiquetas de los valores sobre las barras
+for index, value in enumerate(resultados['Exactitud (Accuracy)']):
+    barplot.text(index, value + 0.01, f'{value:.2f}', color='black', ha="center")
+
+plt.show()
+
+
+
+  
+```
+
+
+
+
+
+
+
+
+
+![comparacion exactitud entre modelos 1](https://github.com/user-attachments/assets/3df19f70-6a92-4a8a-9c39-2194ee5b9ea4)
+
+
+
 
 
 
@@ -335,6 +475,9 @@ plt.show()
 ```
 
 
+
+
+![comparacion exactitud train vs test](https://github.com/user-attachments/assets/b5f84120-8ccc-477e-ba74-5b576c87c186)
 
 
 
@@ -463,6 +606,7 @@ plt.show()
 
 
 
+![comparacion exactitud entre modelos 2](https://github.com/user-attachments/assets/dd217875-7cad-4321-871d-99ad9672e1e4)
 
 
 
