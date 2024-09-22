@@ -499,7 +499,7 @@ Sin observaciones.
 [Proyecto 5 Profundización: Machine learning](https://colab.research.google.com/drive/1XaPDQbOWlvFNajqSp4p2xgJhtBkd5-Aa?usp=sharing)
 
 
-[Proyecto 5 Profundización: Machine learning]([https://docs.google.com/presentation/d/1_Y92Fv69cQo3SMJMb2j6CGvj83PefTUt40iuy1YE4VU/edit?usp=sharing](https://docs.google.com/presentation/d/1F82bOv815Vend0mR2ljCJm8XFyVwZF8jW1WdsM2dar4/edit?usp=drive_link])
+[Proyecto 5 Profundización: Machine learning](https://docs.google.com/presentation/d/1F82bOv815Vend0mR2ljCJm8XFyVwZF8jW1WdsM2dar4/edit?usp=drive_link)
 
 
 [Presentación video](https://www.loom.com/share/5ad45658034b4d6d89a1f1db8e4c825f?sid=6b9d6243-e58e-454d-b12c-d3d42cee0651)
